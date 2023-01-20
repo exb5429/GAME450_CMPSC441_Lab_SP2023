@@ -1,3 +1,5 @@
+import re
+
 '''
 Extra Credit Task-
 
@@ -23,3 +25,18 @@ Your task is to write a function that can translate from strings of length 2 to 
 
 For example, calling get_row_col("A3") should return the tuple (2, 0) because A3 corresponds to the row at index 2 and column at index 0in the board.
 '''
+
+def get_row_col(coord):
+    temp = re.compile("([A-C]+)([1-3]+)")
+    res = temp.match(coord).groups()
+
+    new_coord = (chr(ord(res[1])-1),chr((ord(res[0])-16)-1))
+
+    return new_coord
+
+
+
+if __name__ == '__main__':
+    print("Enter A Move in Caps")
+    input = input()
+    print(get_row_col(input))
