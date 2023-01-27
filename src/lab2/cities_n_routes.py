@@ -19,7 +19,7 @@ def get_randomly_spread_cities(size, n_cities):
     """
     cityList = []
     for i in range(n_cities): 
-        cityList.append((random.randint(0,size[0]),random.randint(0,size[1])))
+        cityList.append((random.randint(0,size[0]-1),random.randint(0,size[1]-1)))
         
 
     # Consider the condition where x size and y size are different
