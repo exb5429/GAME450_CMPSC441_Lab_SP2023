@@ -43,10 +43,25 @@ class AiPlayer(Player):
     def __init__(self, name):
         super().__init__(name)
         self.initial_weapon = random_weapon_select()
+        #Added a isMimic variable to keep track of isMimic
+        self.isMimic = False
+        
     
     def weapon_selecting_strategy(self):
-        pass
-
+     
+        
+        #Random guess on first round
+        if len(self.opponent_choices) == 0:
+            return self.initial_weapon
+        #Check if it is a mimic on round 3
+        if len(self.opponent_choices) == 3:
+            if self.opponent_choices[-1] == self.my_choices[-2]:
+                self.isMimic = True
+        #return a choice that would beat your last choice if its a mimic
+        if (self.isMimic):
+            return (self.my_choices[-1]+1)%3
+        #return a choice that beat the Ai's last choice
+        return (self.opponent_choices[-1]+1)%3 
 
 if __name__ == '__main__':
     final_tally = [0]*3

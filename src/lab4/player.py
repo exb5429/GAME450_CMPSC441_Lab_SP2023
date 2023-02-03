@@ -6,6 +6,7 @@ class Player:
         self.my_choices = []
         self.opponent_choices = []
         self.strategy = strategy
+        
 
     def selectAction(self, percept):
         """
