@@ -29,6 +29,22 @@ from lab2.cities_n_routes import get_randomly_spread_cities, get_routes
 # TODO: Demo blittable surface helper function
 
 ''' Create helper functions here '''
+def get_Landscape_surface(size):
+    landscape = get_landscape(size)
+    print("Created a landscape of size", landscape.shape)
+    pygame_surface = pygame.surfarray.make_surface(landscape[:, :, :3]) 
+    return pygame_surface
+
+
+def draw_cities(surface,city_names, city_locations_dict):
+    for i in city_names:
+
+        pygame.draw.circle(surface,(0,0,0),(city_locations_dict[i]),2)
+
+
+def draw_routes(surface,routes,city_locations_dict):
+    for i in routes:
+        pygame.draw.line(pygame_surface,(0,0,0),city_locations_dict[i[0]],city_locations_dict[i[1]],2)
 
 if __name__ == "__main__":
     pygame.init()
@@ -36,9 +52,8 @@ if __name__ == "__main__":
     black = 1, 1, 1
 
     screen = pygame.display.set_mode(size)
-    landscape = get_landscape(size)
-    print("Created a landscape of size", landscape.shape)
-    pygame_surface = pygame.surfarray.make_surface(landscape[:, :, :3]) 
+    
+    pygame_surface = get_Landscape_surface(size)
 
     city_names = ['Morkomasto', 'Morathrad', 'Eregailin', 'Corathrad', 'Eregarta',
                   'Numensari', 'Rhunkadi', 'Londathrad', 'Baernlad', 'Forthyr']
@@ -46,11 +61,14 @@ if __name__ == "__main__":
     routes = []
 
     ''' Setup cities and routes in here'''
+    city_locations = get_randomly_spread_cities(size,len(city_names))
+    routes = get_routes(city_names)
 
     city_locations_dict = {name: location for name, location in zip(city_names, city_locations)}
     random.shuffle(routes)
     routes = routes[:10] 
 
+    
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -59,8 +77,13 @@ if __name__ == "__main__":
         screen.fill(black)
         screen.blit(pygame_surface, (0, 0))
 
-        ''' draw cities '''
 
+
+
+        ''' draw cities '''
+        draw_cities(pygame_surface,city_names,city_locations_dict)
+
+        draw_routes(pygame_surface,routes,city_locations_dict)
         ''' draw first 10 routes '''
 
         pygame.display.flip()
