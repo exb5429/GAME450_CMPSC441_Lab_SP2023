@@ -21,6 +21,8 @@ sys.path.append(str((Path(__file__) / ".." / ".." / "..").resolve().absolute()))
 
 from src.lab5.landscape import elevation_to_rgba
 
+from src.lab5.landscape import get_elevation
+
 
 def game_fitness(cities, idx, elevation, size):
     fitness = 0.0001  # Do not return a fitness of 0, it will mess up the algorithm.
@@ -30,6 +32,29 @@ def game_fitness(cities, idx, elevation, size):
     2. The cities should have a realistic distribution across the landscape
     3. The cities may also not be on top of mountains or on top of each other
     """
+    coords = solution_to_cities(cities,size)
+    for city in coords:
+
+
+        """
+        checks to make sure the elevation is greater than .4 (the height i found to be water) and makes sure it is below .8 (the height I found to be mountains)
+        The city should never end up in water or on top of the mountain which is a realistic spread of cities
+        
+        
+        """
+        if(elevation[city[0]][city[1]] > .4 and elevation[city[0]][city[1]] < .8):
+            fitness = fitness + 1
+
+        
+        
+
+
+        
+
+    
+
+
+
     return fitness
 
 
@@ -115,6 +140,7 @@ if __name__ == "__main__":
     n_cities = 10
     elevation = []
     """ initialize elevation here from your previous code"""
+    elevation = get_elevation(size)
     # normalize landscape
     elevation = np.array(elevation)
     elevation = (elevation - elevation.min()) / (elevation.max() - elevation.min())
