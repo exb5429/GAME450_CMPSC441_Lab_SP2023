@@ -24,6 +24,6 @@ class PyGameAICombatPlayer(CombatPlayer):
         while True:
             
             self.weapon = random.randint(0,2)
-            time.sleep(1)
+            time.sleep(.1)
             return self.weapon
                     

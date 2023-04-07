@@ -22,20 +22,19 @@ from lab11.pygame_ai_player import PyGameAICombatPlayer
 from lab11.pygame_human_player import PyGameHumanCombatPlayer
 from lab11.pygame_combat import PyGameComputerCombatPlayer
 
-def run_episode(currentGame, player, opponent):
+def run_episode( player, opponent):
     turnList = []
-    
-    while (1):
+    currentGame = Combat()
+    while currentGame.gameOver == False:
         reward = run_turn(currentGame,player,opponent)
-
+        
         
         state = (player.health, opponent.health)
         weapon = player.weapon
         turnList.append((state, weapon, reward))
-        if (reward != 0):
-            break
-    print(turnList)
-    return(turnList)
+        
+    
+    return turnList
 
 
 if __name__ == "__main__":
@@ -43,4 +42,4 @@ if __name__ == "__main__":
     player = PyGameAICombatPlayer("Legolas")
     opponent = PyGameComputerCombatPlayer("Computer")
 
-    run_episode(currentGame, player, opponent)
+    run_episode( player, opponent)

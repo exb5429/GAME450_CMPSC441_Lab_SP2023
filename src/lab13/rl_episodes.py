@@ -15,9 +15,12 @@ this may lead to the agent losing the game.
 import sys
 from pathlib import Path
 
+
 # line taken from turn_combat.py
 sys.path.append(str((Path(__file__) / ".." / "..").resolve().absolute()))
 
+
+from lab11.pygame_ai_player import PyGameAICombatPlayer
 from lab11.pygame_combat import PyGameComputerCombatPlayer
 from lab11.turn_combat import CombatPlayer
 from lab12.episode import run_episode
@@ -74,8 +77,37 @@ def run_episodes(n_episodes):
         Return the action values as a dictionary of dictionaries where the keys are states and 
             the values are dictionaries of actions and their values.
     '''
+    player = PyGameAICombatPlayer("Legolas")
+    opponent = PyGameComputerCombatPlayer("Computer")
+    history = {}
+    for i in range(n_episodes):
+        action_values = run_random_episode(player,opponent)
+        history.update( get_history_returns(action_values))
+    
 
-    return action_values
+
+    # for i, j in history.items():
+    #     print("ID:", i)
+    #     for key in j:
+    #         print(key , ':', j[key])
+    #         history
+
+    avgZero = 0
+    avgOne = 0
+    avgTwo = 0
+    print(history)
+    for i in history:
+        for j in history[i]:
+            if history[i][j] == 0:
+                avgZero = 1
+            if history[i][j] == 1:
+                avgOne = 1
+            if history[i][j] == 2:
+                avgTwo = 1
+            
+
+
+    return history
 
 
 def get_optimal_policy(action_values):
@@ -99,8 +131,8 @@ def test_policy(policy):
 
 
 if __name__ == "__main__":
-    action_values = run_episodes(10000)
-    print(action_values)
-    optimal_policy = get_optimal_policy(action_values)
-    print(optimal_policy)
-    print(test_policy(optimal_policy))
+    action_values = run_episodes(5)
+   # print(action_values)
+    #optimal_policy = get_optimal_policy(action_values)
+    #print(optimal_policy)
+    #print(test_policy(optimal_policy))
