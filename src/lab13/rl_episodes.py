@@ -45,7 +45,7 @@ class PyGamePolicyCombatPlayer(CombatPlayer):
         self.policy = policy
 
     def weapon_selecting_strategy(self):
-        self.weapon = self.policy[self.current_env_state]
+        self.weapon = self.policy[tuple(self.current_env_state)]
         return self.weapon
 
 
@@ -79,35 +79,54 @@ def run_episodes(n_episodes):
     '''
     player = PyGameAICombatPlayer("Legolas")
     opponent = PyGameComputerCombatPlayer("Computer")
-    history = {}
-    for i in range(n_episodes):
-        action_values = run_random_episode(player,opponent)
-        history.update( get_history_returns(action_values))
+    action_values_temp = {}
     
+    i = 0
+    for i in range(n_episodes):
+        print(i+1, "\n\n\n")
+        history = run_random_episode(player,opponent)
+        
+       
+        print (get_history_returns(history))
+        for state, stateDict in get_history_returns(history).items():
+            
+            
+            for action in stateDict:
+                
+                if state not in action_values_temp:
+                    action_values_temp[state] = {}
+                if action not in action_values_temp[state]:
+                    action_values_temp[state][action] = []
+
+                action_values_temp[state][action].append(stateDict[action])
 
 
-    # for i, j in history.items():
-    #     print("ID:", i)
-    #     for key in j:
-    #         print(key , ':', j[key])
-    #         history
+    print("Before avg\n")           
+    for i, j in action_values_temp.items():
+        print("ID:", i)
+        for key in j:
+            print(key , ':', j[key])     
+                    
 
-    avgZero = 0
-    avgOne = 0
-    avgTwo = 0
-    print(history)
-    for i in history:
-        for j in history[i]:
-            if history[i][j] == 0:
-                avgZero = 1
-            if history[i][j] == 1:
-                avgOne = 1
-            if history[i][j] == 2:
-                avgTwo = 1
+    for i, j in action_values_temp.items():
+        for key in j:
+            Sum = sum(j[key])
+            length = len(j[key])
+            avg = Sum/length
+            action_values_temp[i][key] = avg
+           # history.update({i: {key: avg}})
+
+    for i, j in action_values_temp.items():
+        print("ID:", i)
+        for key in j:
+            print(key , ':', j[key])
+            
+
+   
             
 
 
-    return history
+    return action_values_temp
 
 
 def get_optimal_policy(action_values):
@@ -131,8 +150,9 @@ def test_policy(policy):
 
 
 if __name__ == "__main__":
-    action_values = run_episodes(5)
-   # print(action_values)
-    #optimal_policy = get_optimal_policy(action_values)
-    #print(optimal_policy)
-    #print(test_policy(optimal_policy))
+    action_values = run_episodes(10000)
+    print(action_values)
+    optimal_policy = get_optimal_policy(action_values)
+    print(optimal_policy)
+    
+    print(test_policy(optimal_policy))

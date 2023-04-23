@@ -26,10 +26,9 @@ def run_episode( player, opponent):
     turnList = []
     currentGame = Combat()
     while currentGame.gameOver == False:
+        state = (player.health, opponent.health)
         reward = run_turn(currentGame,player,opponent)
         
-        
-        state = (player.health, opponent.health)
         weapon = player.weapon
         turnList.append((state, weapon, reward))
         
