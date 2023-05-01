@@ -33,6 +33,7 @@ def game_fitness(cities, idx, elevation, size):
     3. The cities may also not be on top of mountains or on top of each other
     """
     coords = solution_to_cities(cities,size)
+    closeTocity = 0
     for city in coords:
 
 
@@ -44,6 +45,17 @@ def game_fitness(cities, idx, elevation, size):
         """
         if(elevation[city[0]][city[1]] > .4 and elevation[city[0]][city[1]] < .8):
             fitness = fitness + 1
+
+        for closeCity in coords:
+            
+            if (city[0] > closeCity[0] - 40 and city[0] < closeCity[0] + 40) and (city[1] > closeCity[1] - 40 and city[1] < closeCity[1] + 40):
+                closeTocity += 1
+
+        
+        if closeTocity <= len(coords):
+            fitness += 1
+        
+        
 
         
         
@@ -155,16 +167,17 @@ if __name__ == "__main__":
     # Show one of the initial solutions.
     cities = ga_instance.initial_population[0]
     cities = solution_to_cities(cities, size)
-    show_cities(cities, landscape_pic)
+    #show_cities(cities, landscape_pic)
 
     # Run the GA to optimize the parameters of the function.
     ga_instance.run()
-    ga_instance.plot_fitness()
+    #ga_instance.plot_fitness()
     print("Final Population")
 
     # Show the best solution after the GA finishes running.
     cities = ga_instance.best_solution()[0]
     cities_t = solution_to_cities(cities, size)
+    test = map(tuple,cities_t)
     plt.imshow(landscape_pic, cmap="gist_earth")
     plt.plot(cities_t[:, 1], cities_t[:, 0], "r.")
     plt.show()

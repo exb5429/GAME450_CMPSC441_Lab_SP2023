@@ -46,14 +46,15 @@ def run_turn(currentGame, player, opponent):
     print("%s's health = %d" % (player.name, player.health))
     print("%s's health = %d" % (opponent.name, opponent.health))
     reward = currentGame.checkWin(player, opponent)
+    return reward
 
 
 def run_pygame_combat(combat_surface, screen, player_sprite):
     currentGame = Combat()
-    #player = PyGameHumanCombatPlayer("Legolas")
+    player = PyGameHumanCombatPlayer("Legolas")
     """ Add a line below that will reset the player object
     to an instance of the PyGameAICombatPlayer class"""
-    player = PyGameAICombatPlayer("Legolas")
+    #player = PyGameAICombatPlayer("Legolas")
 
     opponent = PyGameComputerCombatPlayer("Computer")
     
@@ -65,4 +66,5 @@ def run_pygame_combat(combat_surface, screen, player_sprite):
     while not currentGame.gameOver:
         draw_combat_on_window(combat_surface, screen, player_sprite, opponent_sprite)
 
-        run_turn(currentGame, player, opponent)
+        result = run_turn(currentGame, player, opponent)
+    return result
